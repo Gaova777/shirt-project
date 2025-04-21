@@ -1,33 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+
+import {Suspense, useRef} from 'react'
+import {fullpageApi, type Item} from '@fullpage/react-fullpage';
+import state, {type State} from './store'
+import {Sections} from './utilities/types'
+import { useDeviceDectection } from './hooks'
+import { SECTIONS } from './utilities/constants';
+import FullPage from './components/FullPage';
+
+
+// import components
+// import utils
+// import sections
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const apiRef = useRef<fullpageApi>();
+  const deviceType = useDeviceDectection();
+
+  const handleLoadFullPage = ({ api }: { api: fullpageApi }) => {
+    apiRef.current = api;
+  }
+
+  const handleSectionChange = ({to}: {to: Item})=>{
+    state.section = SECTIONS[to.index];
+  }
+
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {/* Add your FullPage component here */}
+      <FullPage onChange={handleSectionChange} onLoad={handleLoadFullPage}  >
+        {() => (
+          <>
+          
+          {/* Add your section components here */}
+          {/* Example Section Component */}
+          <div>Section 1</div>
+          <div>Section 2</div>
+          <div>Section 3</div>
+          </>
+        )}
+      </FullPage>
     </>
   )
 }

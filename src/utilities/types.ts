@@ -1,0 +1,1 @@
+export type Sections = "navbar" | "home" | "about" |"clothes" | "ubication" | "contact"; 
